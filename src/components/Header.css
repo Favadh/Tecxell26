@@ -1,0 +1,105 @@
+.app-header {
+    width: 100%;
+    padding: 20px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-logo {
+    max-width: 180px;
+}
+
+.center-logo {
+    max-width: 300px;
+}
+
+.right-logo {
+    max-width: 90px;
+}
+
+.header-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* 
+ * CSS Tricks to remove JPEG backgrounds dynamically
+ */
+.left-logo img {
+    /* MITS logo styling fixed to appear white instead of grey/cyan */
+    filter: invert(1) brightness(100) grayscale(100%);
+    mix-blend-mode: screen;
+}
+
+.center-logo img {
+    animation: floatingLogo 3s ease-in-out infinite;
+}
+
+.right-logo img {
+    /* The Computex logo has a black background. Screen mode makes black completely transparent! */
+    mix-blend-mode: screen;
+}
+
+@keyframes floatingLogo {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@media (max-width: 768px) {
+    .left-logo {
+        max-width: 120px;
+    }
+
+    .center-logo {
+        max-width: 200px;
+    }
+
+    .right-logo {
+        max-width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .left-logo {
+        max-width: 100px;
+        display: none;
+    }
+
+    .right-logo {
+        max-width: 50px;
+        display: none;
+    }
+
+    .center-logo {
+        max-width: 250px;
+    }
+}

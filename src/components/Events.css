@@ -1,0 +1,236 @@
+.events-section {
+    padding: 100px 20px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.techfest-heading {
+    font-size: 3rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    text-shadow: 4px 4px 0 var(--arcade-red);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.event-card {
+    background: #000;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s ease;
+}
+
+.event-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px var(--arcade-pink),
+        -4px 0 0 #fff,
+        4px 0 0 #fff,
+        0 -4px 0 #fff,
+        0 4px 0 #fff;
+}
+
+.card-pink {
+    border-color: var(--arcade-pink);
+}
+
+.card-pink:hover {
+    box-shadow: 8px 8px 0px var(--arcade-pink), -4px 0 0 #fff, 4px 0 0 #fff, 0 -4px 0 #fff, 0 4px 0 #fff;
+    border-color: #fff;
+}
+
+.card-blue {
+    border-color: var(--arcade-blue);
+}
+
+.card-blue:hover {
+    box-shadow: 8px 8px 0px var(--arcade-blue), -4px 0 0 #fff, 4px 0 0 #fff, 0 -4px 0 #fff, 0 4px 0 #fff;
+    border-color: #fff;
+}
+
+.card-green {
+    border-color: var(--arcade-green);
+}
+
+.card-green:hover {
+    box-shadow: 8px 8px 0px var(--arcade-green), -4px 0 0 #fff, 4px 0 0 #fff, 0 -4px 0 #fff, 0 4px 0 #fff;
+    border-color: #fff;
+}
+
+.card-yellow {
+    border-color: var(--arcade-yellow);
+}
+
+.card-yellow:hover {
+    box-shadow: 8px 8px 0px var(--arcade-yellow), -4px 0 0 #fff, 4px 0 0 #fff, 0 -4px 0 #fff, 0 4px 0 #fff;
+    border-color: #fff;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: #fff;
+    border-bottom: 4px dotted #444;
+    padding-bottom: 10px;
+}
+
+.points-label {
+    color: var(--arcade-yellow);
+}
+
+.card-icon-wrapper {
+    width: 100%;
+    height: 120px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border: 4px solid #333;
+    transition: transform 0.1s ease;
+}
+
+.event-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: grayscale(100%) contrast(120%) brightness(80%);
+}
+
+.event-card:hover .event-icon-img {
+    transform: scale(1.1);
+    filter: grayscale(0%) contrast(100%) brightness(100%);
+}
+
+.text-arcade-pink {
+    color: var(--arcade-pink);
+}
+
+.text-arcade-blue {
+    color: var(--arcade-blue);
+}
+
+.text-arcade-green {
+    color: var(--arcade-green);
+}
+
+.text-arcade-yellow {
+    color: var(--arcade-yellow);
+}
+
+.event-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-heading);
+}
+
+.event-desc {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #ccc;
+    text-align: center;
+    flex-grow: 1;
+    margin-bottom: 25px;
+    font-family: var(--font-body);
+}
+
+.card-footer {
+    margin-top: auto;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* Dynamic Button Styles */
+.btn-style-green {
+    border: 4px solid var(--arcade-green);
+    box-shadow: 4px 4px 0px var(--arcade-green);
+    background: #000;
+}
+
+.btn-style-green:hover {
+    background: var(--arcade-green);
+    color: #000;
+    box-shadow: none;
+    transform: translate(4px, 4px);
+    text-shadow: none;
+}
+
+.btn-style-pink {
+    border: 4px solid var(--arcade-pink);
+    box-shadow: 4px 4px 0px var(--arcade-pink);
+    background: #000;
+}
+
+.btn-style-pink:hover {
+    background: var(--arcade-pink);
+    color: #000;
+    box-shadow: none;
+    transform: translate(4px, 4px);
+    text-shadow: none;
+}
+
+.btn-style-blue {
+    border: 4px solid var(--arcade-blue);
+    box-shadow: 4px 4px 0px var(--arcade-blue);
+    background: #000;
+}
+
+.btn-style-blue:hover {
+    background: var(--arcade-blue);
+    color: #000;
+    box-shadow: none;
+    transform: translate(4px, 4px);
+    text-shadow: none;
+}
+
+.btn-style-yellow {
+    border: 4px solid var(--arcade-yellow);
+    box-shadow: 4px 4px 0px var(--arcade-yellow);
+    background: #000;
+}
+
+.btn-style-yellow:hover {
+    background: var(--arcade-yellow);
+    color: #000;
+    box-shadow: none;
+    transform: translate(4px, 4px);
+    text-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .techfest-heading {
+        font-size: 2.2rem;
+        text-shadow: 2px 2px 0 var(--arcade-red);
+    }
+}
+
+@media (max-width: 480px) {
+    .events-section {
+        padding: 60px 10px;
+    }
+
+    .techfest-heading {
+        font-size: 1.5rem;
+        text-shadow: 2px 2px 0 var(--arcade-red);
+    }
+
+    .event-card {
+        padding: 15px;
+    }
+}

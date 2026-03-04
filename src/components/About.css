@@ -1,0 +1,187 @@
+.about-section {
+    padding: 100px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-box {
+    width: 100%;
+    max-width: 1000px;
+    background: #000;
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.dialog-header {
+    background: #333;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid #fff;
+}
+
+.npc-name {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.control-btn {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border: 2px solid #000;
+}
+
+.dialog-body {
+    padding: 30px;
+    display: flex;
+    gap: 30px;
+}
+
+.npc-portrait {
+    width: 150px;
+    height: 150px;
+    background: #111;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.npc-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.dialog-text {
+    flex-grow: 1;
+}
+
+.dialog-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.typewriter-container {
+    font-family: var(--font-body);
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: #fff;
+    min-height: 120px;
+}
+
+.text-arcade-pink {
+    color: var(--arcade-pink);
+}
+
+.text-arcade-green {
+    color: var(--arcade-green);
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-box {
+    background: #111;
+    padding: 15px 25px;
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+    transition: transform 0.1s;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    background: #222;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-family: var(--font-heading);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--arcade-yellow);
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.prompt-continue {
+    margin-top: 30px;
+    text-align: right;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.mt-4 {
+    margin-top: 25px;
+}
+
+@media (max-width: 768px) {
+    .dialog-body {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .prompt-continue {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-section {
+        padding: 60px 10px;
+    }
+
+    .npc-portrait {
+        width: 100px;
+        height: 100px;
+    }
+
+    .dialog-title {
+        font-size: 1.2rem;
+    }
+
+    .typewriter-container {
+        font-size: 1.2rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+}

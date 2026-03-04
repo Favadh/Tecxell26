@@ -1,0 +1,325 @@
+.admin-dashboard-page {
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    display: flex;
+    padding: 30px;
+    gap: 20px;
+    padding-top: 50px;
+    /* Space for if header ever shows */
+    font-family: var(--font-body);
+}
+
+.border-blue {
+    border-color: var(--arcade-blue) !important;
+}
+
+/* Sidebar Navigation */
+.admin-sidebar {
+    width: 250px;
+    background: #050505;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: calc(100vh - 80px);
+    /* Fill screen height minus padding */
+}
+
+.admin-profile {
+    border-bottom: 2px dashed #333;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-profile h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.online-status {
+    color: var(--arcade-green);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-grow: 1;
+}
+
+.admin-nav-item {
+    background: transparent;
+    border: none;
+    color: #888;
+    text-align: left;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-nav-item:hover,
+.admin-nav-item.active {
+    color: var(--arcade-blue);
+    background: rgba(0, 240, 255, 0.1);
+    padding-left: 20px;
+}
+
+.admin-nav-item.logout {
+    margin-top: auto;
+    /* Pushes logout to bottom */
+    color: var(--arcade-red);
+    text-align: center;
+    padding-left: 10px !important;
+}
+
+.admin-nav-item.logout:hover {
+    background: rgba(255, 0, 60, 0.1);
+    color: #fff;
+}
+
+/* Main Content Area */
+.admin-content-area {
+    flex-grow: 1;
+    background: #000;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+}
+
+.view-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.tab-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    margin-bottom: 0;
+    /* Remove margin since header controls spacing */
+    border-bottom: none;
+    /* Removed from individual title */
+    padding-bottom: 0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #111;
+    border: 2px solid #555;
+    padding: 5px 15px;
+}
+
+.search-icon {
+    color: var(--arcade-blue);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    animation: blink 1.5s infinite;
+}
+
+.search-input {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 8px !important;
+    font-size: 1rem !important;
+    min-width: 250px;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.text-arcade-blue {
+    color: var(--arcade-blue);
+}
+
+.text-arcade-yellow {
+    color: var(--arcade-yellow);
+}
+
+.text-arcade-pink {
+    color: var(--arcade-pink);
+}
+
+.text-arcade-green {
+    color: var(--arcade-green);
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+/* Table Styling */
+.table-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.pixel-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    color: #fff;
+    font-size: 1.3rem;
+    /* Slightly larger for VT323 font */
+}
+
+.pixel-table th {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: #aaa;
+    padding: 15px;
+    border-bottom: 2px solid #333;
+    position: sticky;
+    top: 0;
+    background: #000;
+    z-index: 10;
+}
+
+.pixel-table td {
+    padding: 15px;
+    border-bottom: 1px dashed #222;
+    vertical-align: middle;
+}
+
+.pixel-table tr:hover td {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 10px;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    border: 1px solid;
+    display: inline-block;
+}
+
+.stat-yet-to-start {
+    color: #888;
+    border-color: #555;
+    background: rgba(100, 100, 100, 0.1);
+}
+
+.stat-in-progress {
+    color: var(--arcade-blue);
+    border-color: var(--arcade-blue);
+    background: rgba(0, 240, 255, 0.1);
+    animation: slowPulse 2s infinite;
+}
+
+.stat-delayed {
+    color: var(--arcade-red);
+    border-color: var(--arcade-red);
+    background: rgba(255, 0, 60, 0.1);
+}
+
+.stat-completed {
+    color: var(--arcade-green);
+    border-color: var(--arcade-green);
+    background: rgba(57, 255, 20, 0.1);
+}
+
+/* Select Dropdown */
+.pixel-select {
+    background: #111;
+    color: #fff;
+    border: 2px solid #555;
+    padding: 8px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.pixel-select:hover,
+.pixel-select:focus {
+    border-color: #fff;
+}
+
+@keyframes slowPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Custom Scrollbar for Tables */
+.table-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border-left: 1px solid #222;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .admin-dashboard-page {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .admin-profile {
+        margin-bottom: 0;
+        border-bottom: none;
+        border-right: 2px dashed #333;
+        padding-bottom: 0;
+        padding-right: 20px;
+        margin-right: 20px;
+    }
+
+    .admin-nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .admin-nav-item.logout {
+        margin-top: 0;
+        margin-left: auto;
+    }
+}

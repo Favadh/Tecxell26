@@ -1,0 +1,46 @@
+.typewriter-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* 
+The ghost text takes up the exact physical space that the final text will occupy.
+This prevents the container from shrinking/expanding while the visible text types out.
+*/
+.typewriter-ghost {
+    visibility: hidden;
+    pointer-events: none;
+    white-space: pre-wrap;
+}
+
+.typewriter-visible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.typewriter-cursor {
+    display: inline-block;
+    width: 0.15em;
+    height: 1em;
+    background-color: var(--arcade-green);
+    vertical-align: text-bottom;
+    margin-left: 4px;
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}

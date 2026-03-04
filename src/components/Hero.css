@@ -1,0 +1,145 @@
+.hero-section {
+    position: relative;
+    padding: 120px 20px 40px 20px;
+    /* Reduced bottom padding, increased top to account for absolute header */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    min-height: 80vh;
+    /* Make it smaller than full screen */
+}
+
+.hero-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+    background-size: 100% 4px;
+}
+
+.hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    background: #000;
+    padding: 30px;
+    /* Reduced padding */
+}
+
+.hero-main-title {
+    font-size: 4rem;
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: var(--font-heading);
+}
+
+.techfest-subtitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 20px;
+    font-family: var(--font-body);
+}
+
+.techfest-date {
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    color: var(--arcade-yellow);
+    margin-bottom: 40px;
+}
+
+.mt-4 {
+    margin-top: 20px;
+}
+
+.mt-5 {
+    margin-top: 30px;
+}
+
+.pixel-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #000;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.btn-style-red {
+    border: 4px solid var(--arcade-red);
+    box-shadow: 4px 4px 0px var(--arcade-red);
+}
+
+.btn-style-red:hover {
+    background: var(--arcade-red);
+    color: #000;
+    box-shadow: none;
+    transform: translate(4px, 4px);
+    text-shadow: none;
+}
+
+.blink-text {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 100px 15px 30px 15px;
+        min-height: 60vh;
+    }
+
+    .hero-main-title {
+        font-size: 2.8rem;
+    }
+
+    .techfest-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .hero-content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-main-title {
+        font-size: 2rem;
+    }
+
+    .techfest-subtitle {
+        font-size: 1rem;
+    }
+
+    .techfest-date {
+        font-size: 0.8rem;
+    }
+}

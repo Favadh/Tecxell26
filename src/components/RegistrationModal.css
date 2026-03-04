@@ -1,0 +1,218 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #050505;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    /* Prevents it from exceeding viewport height */
+    overflow-y: auto;
+    /* Enables vertical scrolling inside the modal */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Custom Scrollbar for Retro Feel */
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #111;
+    border-left: 2px solid #333;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--arcade-blue);
+    border: 2px solid #000;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--arcade-pink);
+}
+
+@keyframes dropIn {
+    0% {
+        transform: translateY(-50px) scale(0.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.close-btn:hover {
+    color: var(--arcade-red);
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 25px;
+    text-align: center;
+    font-family: var(--font-heading);
+    line-height: 1.4;
+}
+
+.retro-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-group label {
+    font-family: var(--font-heading);
+    color: var(--arcade-blue);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.pixel-input {
+    background: #111;
+    border: 4px solid #333;
+    color: #fff;
+    padding: 12px 15px;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.pixel-input:focus {
+    border-color: #fff;
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.2);
+}
+
+.pixel-input::placeholder {
+    color: #555;
+}
+
+.success-message {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    padding: 40px 0;
+    line-height: 1.8;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    padding: 15px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    color: #fff;
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #444 !important;
+    border-color: #666 !important;
+    color: #aaa !important;
+    box-shadow: none !important;
+}
+
+/* Payment Section */
+.payment-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #444;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.payment-title {
+    font-family: var(--font-heading);
+    color: var(--arcade-yellow);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.qr-container {
+    background: #fff;
+    padding: 10px;
+    border: 4px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.qr-code-img {
+    width: 150px;
+    height: 150px;
+    image-rendering: auto;
+    /* Standard rendering for external QR code */
+}
+
+.qr-instruction {
+    font-family: var(--font-heading);
+    color: #000;
+    font-size: 0.7rem;
+    text-align: center;
+    margin: 0;
+}
+
+.payment-section .form-group {
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 1.2rem;
+    }
+
+    .qr-code-img {
+        width: 120px;
+        height: 120px;
+    }
+}

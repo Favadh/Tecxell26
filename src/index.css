@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+  --arcade-red: #ff003c;
+  --arcade-blue: #00f0ff;
+  --arcade-yellow: #fcee0a;
+  --arcade-green: #39ff14;
+  --arcade-pink: #ff00ff;
+  --bg-dark: #0a0a0a;
+
+  /* Fonts */
+  --font-heading: 'Press Start 2P', cursive;
+  --font-body: 'VT323', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: #fff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  cursor: url('https://cur.cursors-4u.net/games/gam-13/gam1282.cur'), auto;
+}
+
+/* CRT Scanline Effect */
+body::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Global 8-bit utility classes */
+.pixel-border {
+  border: 4px solid #fff;
+  box-shadow:
+    -4px 0 0 #fff,
+    4px 0 0 #fff,
+    0 -4px 0 #fff,
+    0 4px 0 #fff,
+    8px 8px 0 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+  image-rendering: pixelated;
+}
+
+.pixel-text-shadow {
+  text-shadow: 4px 4px 0px var(--arcade-red);
+}
+
+.pixel-text-shadow-blue {
+  text-shadow: 4px 4px 0px var(--arcade-blue);
+}
+
+.pixel-sprite,
+.pixel-sprite-sm {
+  image-rendering: pixelated;
+}
+
+/* Utility classes for layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+a,
+button,
+.pixel-btn,
+.register-btn,
+.arcade-btn,
+.hover-blink {
+  cursor: url('https://cur.cursors-4u.net/games/gam-13/gam1283.cur'), pointer !important;
+}
+
+/* 8-Bit Starfield Background */
+.starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, var(--arcade-pink), rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 40px 70px, var(--arcade-blue), rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 50px 160px, var(--arcade-yellow), rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 160px 120px, var(--arcade-green), rgba(0, 0, 0, 0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: moveStars 20s linear infinite;
+}
+
+.stars2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-image:
+    radial-gradient(3px 3px at 50px 160px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(3px 3px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(3px 3px at 130px 80px, #fff, rgba(0, 0, 0, 0));
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  animation: moveStars 15s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes moveStars {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Mobile text shadow optimization */
+@media (max-width: 768px) {
+  .pixel-text-shadow {
+    text-shadow: 2px 2px 0px var(--arcade-red);
+  }
+
+  .pixel-text-shadow-blue {
+    text-shadow: 2px 2px 0px var(--arcade-blue);
+  }
+}
