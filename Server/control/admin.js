@@ -83,3 +83,13 @@ export const getRegistrations = async (req, res) => {
         res.status(500).json({ error: 'Server error while fetching registrations' });
     }
 };
+
+export const getEventsStatus = async (req, res) => {
+    try {
+        const events = await Event.find({});
+        res.status(200).json({ events });
+    } catch (error) {
+        console.error('Error fetching events status:', error);
+        res.status(500).json({ error: 'Server error while fetching events status' });
+    }
+};
