@@ -7,12 +7,21 @@ const Contact = () => {
         const email = e.target.email.value;
         const message = e.target.message.value;
 
-        // Construct email body
+        // Construct email body with generic line breaks
         const subject = encodeURIComponent(`Tecxell '26 Query from ${name}`);
         const body = encodeURIComponent(`Player Name: ${name}\nPlayer Email: ${email}\n\nMessage:\n${message}`);
 
-        // Open default mail client
-        window.location.href = `mailto:computex@mgits.ac.in?subject=${subject}&body=${body}`;
+        // Create a temporary <a> tag and click it to bypass popup blockers
+        const mailtoLink = `mailto:computex@mgits.ac.in?subject=${subject}&body=${body}`;
+        const tempAnchor = document.createElement('a');
+        tempAnchor.href = mailtoLink;
+        tempAnchor.target = '_blank';
+        document.body.appendChild(tempAnchor);
+        tempAnchor.click();
+        document.body.removeChild(tempAnchor);
+
+        // Alert user just in case their browser blocked it
+        alert("If your mail app didn't open automatically, please ensure you have a default mail client configured on your device.");
 
         e.target.reset();
     };
@@ -33,15 +42,15 @@ const Contact = () => {
                     <form className="contact-form" onSubmit={handleEmailSubmit}>
                         <div className="form-group mt-3">
                             <label htmlFor="name">PLAYER ID_</label>
-                            <input type="text" id="name" required className="pixel-input" placeholder="ENTER NAME" />
+                            <input type="text" id="name" name="name" required className="pixel-input" placeholder="ENTER NAME" />
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">COMMS RELAY_</label>
-                            <input type="email" id="email" required className="pixel-input" placeholder="ENTER EMAIL" />
+                            <input type="email" id="email" name="email" required className="pixel-input" placeholder="ENTER EMAIL" />
                         </div>
                         <div className="form-group">
                             <label htmlFor="message">DATA LOG_</label>
-                            <textarea id="message" rows="4" required className="pixel-input" placeholder="TYPE MESSAGE HERE..."></textarea>
+                            <textarea id="message" name="message" rows="4" required className="pixel-input" placeholder="TYPE MESSAGE HERE..."></textarea>
                         </div>
                         <button type="submit" className="pixel-btn btn-style-blue w-100 mt-4 pixel-text-shadow">
                             START TRANSMISSION
