@@ -46,6 +46,8 @@
     font-size: 1.5rem;
     margin-bottom: 10px;
     color: #fff;
+    word-break: break-all;
+    line-height: 1.2;
 }
 
 .online-status {
@@ -132,6 +134,14 @@
     padding-bottom: 0;
 }
 
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    /* Allows wrapping on smaller screens */
+}
+
 .search-box {
     display: flex;
     align-items: center;
@@ -139,6 +149,7 @@
     background: #111;
     border: 2px solid #555;
     padding: 5px 15px;
+    min-width: 200px;
 }
 
 .search-icon {
@@ -155,6 +166,24 @@
     padding: 8px !important;
     font-size: 1rem !important;
     min-width: 250px;
+    color: #fff;
+    font-family: var(--font-body);
+    outline: none;
+    width: 100%;
+}
+
+.export-btn {
+    margin-left: 15px;
+    padding: 10px 20px;
+    background-color: var(--arcade-blue);
+    color: #000;
+    border: 2px solid #fff;
+    font-size: 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-input:focus {
@@ -293,6 +322,13 @@
     cursor: pointer;
 }
 
+.filter-select {
+    padding: 0.6rem;
+    height: 100%;
+    width: 140px;
+    font-size: 0.8rem;
+}
+
 .pixel-select:hover,
 .pixel-select:focus {
     border-color: #fff;
@@ -353,6 +389,10 @@
         margin-right: 20px;
     }
 
+    .admin-profile h2 {
+        font-size: 1.2rem;
+    }
+
     .admin-nav {
         flex-direction: row;
         overflow-x: auto;
@@ -385,6 +425,10 @@
         margin-bottom: 15px;
     }
 
+    .admin-profile h2 {
+        font-size: 1.5rem;
+    }
+
     .admin-nav {
         flex-direction: column;
         overflow-x: visible;
@@ -409,10 +453,40 @@
     .tab-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
+    }
+
+    .tab-title {
+        font-size: 1.3rem;
+        /* Scale down title so it doesn't wrap awkwardly */
+        word-break: break-word;
+        /* Ensure extremely long words break if needed */
+    }
+
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
     }
 
     .search-input {
-        min-width: 100%;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .filter-select {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .export-btn {
+        margin-left: 0;
+        margin-top: 5px;
+        width: 100%;
     }
 
     .pixel-table {

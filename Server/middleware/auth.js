@@ -14,8 +14,6 @@ const auth = (req, res, next) => {
     
     // Attach the user's info (from the token payload) to the request object
     req.user = decoded; 
-
-    console.log("auth done");
     
     
     next(); // Move on to the next middleware or the route handler

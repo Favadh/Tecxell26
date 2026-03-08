@@ -29,7 +29,6 @@ const AdminLoginPage = () => {
             const response = await api.post('/adminLogin', credentials);
 
             const { msg, token } = response.data;
-            console.log(token);
             localStorage.setItem('token', token);
             setIsLoggingIn(false);
             navigate('/admin/dashboard');

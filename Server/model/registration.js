@@ -40,7 +40,7 @@ const registrationSchema = new mongoose.Schema({
     },
     verified:{
         type:String,
-        enum: ['Pending', 'Verified', 'Rejected'],
+        enum: ['Pending', 'Verified'],
         default:'Pending'
     },
     feeSts:{

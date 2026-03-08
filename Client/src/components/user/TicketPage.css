@@ -155,7 +155,15 @@
     line-height: 1.5;
 }
 
-@media (max-width: 390px) {
+@media (max-width: 480px) {
+    .ticket-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-box.full-width {
+        grid-column: span 1;
+    }
+
     .ticket-logo {
         font-size: 1.2rem;
     }

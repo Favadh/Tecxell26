@@ -1,16 +1,24 @@
 import express from 'express';
-import { adminLogin, getEventsStatus, getRegistrations, verifyPayment } from '../control/admin.js';
+import { adminLogin, adminRegistration, eventRegistration, getEventsStatus, getRegistrations, NotVerifyPayment, verifyPayment, updateEventStatus } from '../control/admin.js';
 import auth from '../middleware/auth.js';
 
-const admitRouter = express.Router();
+const adminRouter = express.Router();
 
-admitRouter.post('/adminLogin', adminLogin);
+adminRouter.post('/adminLogin', adminLogin);
 
-admitRouter.get('/registrationData', auth, getRegistrations);
+adminRouter.get('/registrationData', auth, getRegistrations);
 
-admitRouter.put('/registrationVerify/:id', auth, verifyPayment);
+adminRouter.put('/registrationVerify/:id', auth, verifyPayment);
 
-admitRouter.get('/eventsStatus', auth, getEventsStatus);
+adminRouter.delete('/registrationNotVerify/:id', auth, NotVerifyPayment);
+
+adminRouter.get('/eventsStatus', auth, getEventsStatus);
+
+adminRouter.put('/eventsStatus/:id', auth, updateEventStatus);
+
+// Developers use:
+adminRouter.post('/adminRegistration', adminRegistration);
+adminRouter.post('/events', eventRegistration);
 
 
-export default admitRouter;
+export default adminRouter;

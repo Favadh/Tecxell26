@@ -80,7 +80,7 @@
     flex-grow: 1;
 }
 
-.dialog-title {
+.about-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: #fff;
@@ -173,7 +173,7 @@
         height: 100px;
     }
 
-    .dialog-title {
+    .about-title {
         font-size: 1.2rem;
     }
 

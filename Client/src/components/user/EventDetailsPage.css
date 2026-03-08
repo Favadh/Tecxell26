@@ -355,3 +355,41 @@
         padding: 15px;
     }
 }
+
+@media (max-width: 480px) {
+    .event-details-page {
+        padding-top: 80px;
+    }
+
+    .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .event-title-main {
+        font-size: 2rem;
+    }
+
+    .event-icon-large {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .info-box {
+        padding: 20px;
+    }
+
+    .full-description {
+        font-size: 1rem;
+    }
+
+    .rules-list li {
+        font-size: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+    }
+}

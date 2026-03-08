@@ -2,6 +2,11 @@ import Registration from '../model/registration.js';
 import nodemailer from 'nodemailer';
 import Admin from '../model/admin.js';
 import Event from '../model/events.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const registration = async (req, res) => {
     try {
@@ -63,25 +68,80 @@ export const registration = async (req, res) => {
             }
         });
 
-        // Send email to user
-        const userMessage = `Dear ${playerName[0]},\n\nThank you for registering for ${eventName} at TecXell. Your payment is currently being verified and will be processed within 24 hours.\n\nWe will notify you once verification is complete. Thank you for your patience.\n\nBest regards,\nTecXell Team`;
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const createEmailHTML = (title, name, bodyHtml, buttonHtml = '') => `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
+  .email-container { max-width: 600px; margin: 20px auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+  .logo-header { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; gap: 20px; }
+  .logo-header img { max-height: 45px; }
+  .content { color: #333333; line-height: 1.6; font-size: 16px; }
+  h2 { color: #0056b3; font-size: 22px; margin-bottom: 20px; text-align: center; font-weight: 600; }
+  .btn { display: inline-block; padding: 12px 28px; background-color: #0056b3; color: white !important; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 25px; text-align: center; }
+  .footer { margin-top: 35px; font-size: 13px; color: #777; text-align: center; border-top: 1px solid #eeeeee; padding-top: 20px; }
+</style>
+</head>
+<body>
+  <div class="email-container">
+    <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 30px;">
+      <img src="cid:mits_logo" alt="MITS" style="max-height: 45px; margin: 0 10px;" />
+      <img src="cid:tecxell_logo" alt="TecXell 26" style="max-height: 45px; margin: 0 10px;" />
+      <img src="cid:computex_logo" alt="Computex" style="max-height: 45px; margin: 0 10px;" />
+    </div>
+    <div class="content">
+      <h2>${title}</h2>
+      <p>Hi <strong>${name}</strong>,</p>
+      ${bodyHtml}
+      ${buttonHtml}
+      <div class="footer">
+        <p>If you have any questions or need support, feel free to connect with us.</p>
+        <p>See you there,<br><strong>Team TecXell 26</strong></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+`;
 
-        // Send email to admin
-        const adminMessage = `Dear ${admin?.name || 'Coordinator'},\n\nA new registration has been submitted for ${eventName}.\nPlease verify the payment and approve immediately - do not delay this verification.\n\n[Admin Dashboard: https://tecxell-admin.com/dashboard]\n\nBest regards,\nTecXell System`;
+        const userHtml = createEmailHTML(
+            'Registration Received',
+            playerName[0] || 'Participant',
+            `<p>Thank you for registering for <strong>${eventName}</strong> at TecXell 26!</p>
+             <p>Your payment is currently being verified and will be processed within 24 hours.</p>
+             <p>We will notify you once verification is complete and send your digital Retro-Pass. Thank you for your patience.</p>`
+        );
+
+        const adminHtml = createEmailHTML(
+            'New Registration Alert',
+            admin?.name || 'Coordinator',
+            `<p>A new registration has been submitted for <strong>${eventName}</strong>.</p>
+             <p>Please verify the payment and approve it immediately. Do not delay this verification.</p>`,
+            `<div style="text-align: center;"><a href="https://tecxell-admin.com/dashboard" class="btn" style="display: inline-block; padding: 12px 28px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 25px;">Go to Admin Dashboard</a></div>`
+        );
+
+        const imageAttachments = [
+            { filename: 'mits-logo.png', path: path.join(__dirname, '../public/mits-logo.png'), cid: 'mits_logo' },
+            { filename: 'tecxell-logo.png', path: path.join(__dirname, '../public/tecxell-logo.png'), cid: 'tecxell_logo' },
+            { filename: 'computex-logo.png', path: path.join(__dirname, '../public/computex-logo.png'), cid: 'computex_logo' }
+        ];
 
         const userMailOptions = {
             from: process.env.EMAIL_USER_1,
             to: email,
-            subject: 'Payment Verification Pending - TecXell Registration',
-            text: userMessage
+            subject: 'Payment Verification Pending - TecXell 26 Registration',
+            html: userHtml,
+            attachments: imageAttachments
         };
-
 
         const adminMailOptions = {
             from: process.env.EMAIL_USER_2,
             to: admin?.email,
-            subject: 'New Registration - Verify Payment Now',
-            text: adminMessage
+            subject: `New Registration - Verify Payment Now (${eventName})`,
+            html: adminHtml,
+            attachments: imageAttachments
         };
 
         // Send both emails
@@ -98,33 +158,7 @@ export const registration = async (req, res) => {
     }
 };
 
-export const adminRegistration = async (req, res) => {
-    try {
-        const { name, password, email, eventName, type } = req.body;
 
-        const newAdmin = new Admin({ name, password, email, eventName, type });
-        await newAdmin.save();
-
-        res.status(201).json({ msg: 'Admin Registration successful' });
-    } catch (error) {
-        console.error('Admin Registration error:', error);
-        res.status(500).json({ error: 'Server error during admin registration' });
-    }
-};
-
-export const eventRegistration = async (req, res) => {
-    try {
-        const { name, loc, currentSts, schedule } = req.body;
-
-        const newEvent = new Event({ name, loc, currentSts, schedule });
-        await newEvent.save();
-
-        res.status(201).json({ msg: 'Event Registration successful' });
-    } catch (error) {
-        console.error('Event Registration error:', error);
-        res.status(500).json({ error: 'Server error during event registration' });
-    }
-};
 
 // details of a single registration for the ticket page, also includes event details for the frontend to display on the ticket page
 export const getRegistration = async (req, res) => {
