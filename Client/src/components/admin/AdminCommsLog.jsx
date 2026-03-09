@@ -202,28 +202,31 @@ const AdminCommsLog = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredRegistrations.map((reg, idx) => (
-                            <tr key={reg._id}>
-                                <td>#{idx + 1}</td>
-                                <td className="text-arcade-pink">{reg.eventName}</td>
-                                <td>{Array.isArray(reg.playerName) ? reg.playerName[0] : reg.playerName}</td>
-                                <td className={reg.feeSts === 'Paid' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
-                                    {reg.feeSts}
-                                </td>
-                                <td className={reg.verified === 'Verified' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
-                                    {reg.verified}
-                                </td>
-                                <td style={{ textAlign: 'center' }}>
-                                    <button
-                                        className="pixel-btn blink-text-subtle"
-                                        style={{ background: 'var(--arcade-red)', color: '#fff', border: '2px solid #fff', padding: '5px 10px', fontSize: '0.8rem', cursor: 'pointer' }}
-                                        onClick={() => setSelectedReg(reg)}
-                                    >
-                                        [VIEW]
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {filteredRegistrations.map((reg, idx) => {
+                            const isRecent = reg.createdAt && (new Date() - new Date(reg.createdAt) <= 12 * 60 * 60 * 1000);
+                            return (
+                                <tr key={reg._id} style={{ backgroundColor: isRecent ? 'rgba(173, 216, 230, 0.2)' : 'transparent' }}>
+                                    <td>#{idx + 1}</td>
+                                    <td className="text-arcade-pink">{reg.eventName}</td>
+                                    <td>{Array.isArray(reg.playerName) ? reg.playerName[0] : reg.playerName}</td>
+                                    <td className={reg.feeSts === 'Paid' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
+                                        {reg.feeSts}
+                                    </td>
+                                    <td className={reg.verified === 'Verified' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
+                                        {reg.verified}
+                                    </td>
+                                    <td style={{ textAlign: 'center' }}>
+                                        <button
+                                            className="pixel-btn blink-text-subtle"
+                                            style={{ background: 'var(--arcade-red)', color: '#fff', border: '2px solid #fff', padding: '5px 10px', fontSize: '0.8rem', cursor: 'pointer' }}
+                                            onClick={() => setSelectedReg(reg)}
+                                        >
+                                            [VIEW]
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

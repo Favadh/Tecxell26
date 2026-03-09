@@ -127,7 +127,7 @@ export const verifyPayment = async (req, res) => {
 </head>
 <body>
   <div class="email-container">
-    <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 30px;">
+    <div style="text-align: center; margin-bottom: 30px;">
       <img src="cid:mits_logo" alt="MITS" style="max-height: 45px; margin: 0 10px;" />
       <img src="cid:tecxell_logo" alt="TecXell 26" style="max-height: 45px; margin: 0 10px;" />
       <img src="cid:computex_logo" alt="Computex" style="max-height: 45px; margin: 0 10px;" />

@@ -70,7 +70,7 @@
 .info-box h3,
 .section-subtitle {
     font-family: var(--font-heading);
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #fff;
     margin-bottom: 20px;
     border-bottom: 2px dashed #444;
@@ -89,13 +89,13 @@
 }
 
 .rules-list li {
-    font-size: 1.2rem;
-    color: #ccc;
-    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #e0e0e0;
+    margin-bottom: 18px;
     display: flex;
     align-items: flex-start;
     gap: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .bullet-point {
@@ -108,6 +108,8 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    position: sticky;
+    top: 120px;
 }
 
 .stats-box,
@@ -145,9 +147,9 @@
 }
 
 .logistics-box p {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: #bbb;
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+    color: #e0e0e0;
 }
 
 .logistics-box p:last-child {
@@ -155,28 +157,28 @@
 }
 
 .logistics-box strong {
-    color: var(--arcade-blue);
+    color: var(--arcade-yellow);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
-    margin-right: 10px;
+    font-size: 0.85rem;
+    margin-right: 12px;
 }
 
 .coordinators-box h4 {
     font-family: var(--font-heading);
     font-size: 1rem;
     color: var(--arcade-yellow);
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .coordinators-box ul {
     list-style: square inside;
-    color: #ddd;
-    font-size: 1.1rem;
+    color: #e0e0e0;
+    font-size: 1.25rem;
     padding-left: 10px;
 }
 
 .coordinators-box li {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .progress-box {

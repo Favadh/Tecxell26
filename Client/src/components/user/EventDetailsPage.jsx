@@ -55,26 +55,52 @@ const EventDetailsPage = () => {
                             ))}
                         </ul>
                     </div>
+
+                    {event.judging && (
+                        <div className="rules-section" style={{ marginTop: '40px' }}>
+                            <h3 className="section-subtitle">JUDGING CRITERIA</h3>
+                            <ul className="rules-list">
+                                {event.judging.map((criteria, idx) => (
+                                    <li key={idx}>
+                                        <span className="bullet-point">★</span> {criteria}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
                 <div className="side-panel">
                     <div className="stats-box">
-                        <div className="stat-item">
-                            <span className="stat-label">REWARD:</span>
-                            <span className="stat-value text-shadow-glow" style={{ color: `var(--arcade-${event.color})` }}>
-                                {event.prize}
-                            </span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">POINTS:</span>
-                            <span className="stat-value">{event.points}</span>
+                        <div className="stats-box">
+                            <div className="stat-item">
+                                <span className="stat-label">REWARDS:</span>
+                                {Array.isArray(event.prize) ? (
+                                    event.prize.map((p, i) => (
+                                        <span key={i} className="stat-value text-shadow-glow" style={{ color: `var(--arcade-${event.color})`, fontSize: '1.2rem', marginBottom: '5px' }}>
+                                            {p}
+                                        </span>
+                                    ))
+                                ) : (
+                                    <span className="stat-value text-shadow-glow" style={{ color: `var(--arcade-${event.color})` }}>
+                                        {event.prize}
+                                    </span>
+                                )}
+                            </div>
+                            {event.fee && (
+                                <div className="stat-item" style={{ marginTop: '15px' }}>
+                                    <span className="stat-label">REGISTRATION FEE:</span>
+                                    <span className="stat-value" style={{ color: '#fff' }}>
+                                        {event.fee}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     <div className="logistics-box">
                         <p><strong>DATE:</strong> {event.date}</p>
                         <p><strong>TIME:</strong> {event.time}</p>
-                        <p><strong>VENUE:</strong> {event.venue}</p>
                     </div>
 
                     <div className="coordinators-box">

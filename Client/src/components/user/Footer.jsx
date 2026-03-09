@@ -7,11 +7,11 @@ const Footer = () => {
             <div className="footer-grid container">
                 <div className="footer-col">
                     <h3 className="footer-logo pixel-text-shadow-blue">TECXELL '26</h3>
-                    <p className="footer-tagline">INSERT COIN TO SAVE THE WORLD</p>
+                    <p className="footer-tagline">LEVEL UP YOUR TECH JOURNEY</p>
                 </div>
 
                 <div className="footer-col">
-                    <h4 className="footer-heading">HI-SCORES</h4>
+                    <h4 className="footer-heading">SYS_LINKS</h4>
                     <ul className="footer-links">
                         <li><Link to="/" className="hover-blink">1. HOME_SYS</Link></li>
                         <li><a href="#events" className="hover-blink">2. STAGES</a></li>

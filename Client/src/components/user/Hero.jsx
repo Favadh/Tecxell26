@@ -10,7 +10,7 @@ const Hero = () => {
                     <h1 className="hero-main-title pixel-text-shadow">TECXELL '26</h1>
 
                     <p className="techfest-date blink-text mt-4">
-                        MAR 18 • 2026 | INSERT COIN TO PLAY
+                        MAR 18 • 2026 
                     </p>
 
                     <Countdown targetDate="2026-03-18T00:00:00" />

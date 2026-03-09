@@ -18,20 +18,23 @@ const Events = () => {
                     >
                         <div className="card-header">
                             <span className="stage-label">MISSION {event.stageNumber}</span>
-                            <span className="points-label">{event.points}</span>
                         </div>
 
                         <div className="card-icon-wrapper">
                             <img src={event.icon} alt={event.title} className="event-icon-img" />
                         </div>
 
-                        <h3 className="event-title pixel-text-shadow-blue">{event.title}</h3>
+
+                        <h3 className="event-title pixel-text-shadow">{event.title}</h3>
+
 
                         <p className="event-desc">{event.description}</p>
 
                         <div className="card-footer">
                             <Link to={`/events/${event.id}`} style={{ textDecoration: 'none', width: '100%' }}>
-                                <button className={`pixel-btn btn-style-${event.color} w-100 pixel-text-shadow`}>EXPLORE</button>
+
+                                <button className={`pixel-btn btn-style-${event.color} w-100 pixel-text-shadow`} style={{ textShadow: '1px 1px 0px rgba(0, 0, 0, 0.5)' }}>EXPLORE</button>
+
                             </Link>
                         </div>
                     </div>

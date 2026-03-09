@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
+import { eventsData } from '../../data/eventsData';
+import api from '../../utils/axios';
 import './RegistrationModal.css';
 
 const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClose, onSubmit }) => {
+
+    // Evaluate event flags
+    const isEFootball = eventId === 'e-football';
+    const isReelMaking = eventId === 'reel-making';
+    const isTreasureHunt = eventId === 'treasure-hunt';
+    const isVibeCoding = eventId === 'vibe-coding';
+    const isComputerQuiz = eventId === 'computer-quiz';
+    const isMiniMilitia = eventId === 'mini-militia';
+
     const getInitialSquadSize = () => {
-        if (eventId === 'treasure-hunt') return '4';
-        return '1';
+        if (isTreasureHunt) return 4;
+        if (isReelMaking) return 3;
+        if (isComputerQuiz) return 2;
+        if (isMiniMilitia) return 1;
+        if (isVibeCoding) return 1;
+        return 1;
     };
 
     const [formData, setFormData] = useState({
-        playerName: '',
-        teamLeaderName: '',
-        playerEmail: '',
-        playerPhone: '',
-        collegeName: '',
-        course: '',
-        squadSize: getInitialSquadSize(),
+        teamName: '',
+        player1Name: '',
         player2Name: '',
         player3Name: '',
         player4Name: '',
+        player5Name: '',
+        email: '',
+        phone: '',
+        college: '',
+        branch: '',
+        squadSize: getInitialSquadSize(),
         transactionId: '',
     });
 
@@ -25,10 +41,13 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
     const [isSuccess, setIsSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
-    const isEFootball = eventId === 'e-football';
-    const isReelMaking = eventId === 'reel-making';
-    const isTreasureHunt = eventId === 'treasure-hunt';
-    const isVibeCoding = eventId === 'vibe-coding';
+    const event = eventsData.find(e => e.id === eventId);
+    // Use dynamic string path from eventsData.js directly
+    const dynamicQr = event?.qrCode || '';
+
+    // Field configuration flags
+    const showTeamName = isTreasureHunt || isComputerQuiz || isReelMaking;
+    const showSquadSizeSelect = isTeamEvent && !isMiniMilitia && !isComputerQuiz;
 
     const renderSquadSizeOptions = () => {
         if (isTreasureHunt) {
@@ -45,9 +64,9 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
         if (isReelMaking) {
             return (
                 <>
-                    <option value="1">SOLO (1)</option>
-                    <option value="2">DUO (2)</option>
                     <option value="3">TRIO (3)</option>
+                    <option value="4">SQUAD (4)</option>
+                    <option value="5">PENTA (5)</option>
                 </>
             );
         }
@@ -67,11 +86,11 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
         if (errorMsg) setErrorMsg('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const courseLower = formData.course.toLowerCase().trim();
-        const collegeLower = formData.collegeName.toLowerCase().trim();
+        const courseLower = formData.branch.toLowerCase().trim();
+        const collegeLower = formData.college.toLowerCase().trim();
 
         // Course validation (No btech/mtech variations)
         if (/(b\s*\.?\s*tech|m\s*\.?\s*tech)/i.test(courseLower)) {
@@ -80,7 +99,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
         }
 
         // College validation (No MITS variations)
-        if (/(muthoot institute of technology and science|\bmits\b)/i.test(collegeLower)) {
+        if (/mits|muthoot/i.test(collegeLower)) {
             setErrorMsg('ACCESS DENIED: Participants from MITS are not permitted.');
             return;
         }
@@ -88,14 +107,56 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
         setErrorMsg('');
         setIsSubmitting(true);
 
-        setTimeout(() => {
+        // Helper to precisely match capitalization with Backend DB Schema enum
+        const getExactEventName = (id) => {
+            const map = {
+                'vibe-coding': 'Vibe Coding',
+                'reel-making': 'Reel Making',
+                'poster-making': 'Poster Making',
+                'computer-quiz': 'Computer Quiz',
+                'mini-militia': 'Mini Miltia', // Must stay misspelled to match MongoDB schema
+                'treasure-hunt': 'Treasure Hunt',
+                'e-football': 'E-football'
+            };
+            return map[id] || eventTitle;
+        };
+
+        const activeSize = parseInt(formData.squadSize);
+        let players = [];
+
+        // Push players sequentially based on selected squad size
+        if (formData.player1Name) players.push(formData.player1Name);
+        if (formData.player2Name && activeSize >= 2) players.push(formData.player2Name);
+        if (formData.player3Name && activeSize >= 3) players.push(formData.player3Name);
+        if (formData.player4Name && activeSize >= 4) players.push(formData.player4Name);
+        if (formData.player5Name && activeSize >= 5) players.push(formData.player5Name);
+
+        const payload = {
+            eventName: getExactEventName(eventId),
+            playerName: players,
+            teamName: formData.teamName || "",
+            phone: formData.phone ? Number(formData.phone) : "",
+            email: formData.email || "",
+            college: formData.college || "",
+            branch: formData.branch || "",
+            transactionId: formData.transactionId || "",
+            squadSize: players.length
+        };
+
+        try {
+            await api.post('/registration', payload);
+
             setIsSubmitting(false);
             setIsSuccess(true);
             setTimeout(() => {
-                onSubmit(formData);
+                onSubmit(payload);
                 onClose();
-            }, 800);
-        }, 400);
+            }, 1000);
+        } catch (error) {
+            console.error('Registration failed:', error);
+            setIsSubmitting(false);
+            setErrorMsg(error.response?.data?.message || 'ERROR: FAILED TO CONNECT TO SECURE SERVER.');
+        }
     };
 
     return (
@@ -120,28 +181,16 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="retro-form">
-                        <div className="form-group">
-                            <label>{isReelMaking ? 'TEAM NAME' : 'PLAYER NAME'}</label>
-                            <input
-                                type="text"
-                                name="playerName"
-                                className="pixel-input"
-                                placeholder={isReelMaking ? 'ENTER TEAM NAME...' : 'ENTER ALIAS...'}
-                                value={formData.playerName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
 
-                        {isReelMaking && (
+                        {showTeamName && (
                             <div className="form-group">
-                                <label>TEAM LEADER NAME</label>
+                                <label>TEAM NAME</label>
                                 <input
                                     type="text"
-                                    name="teamLeaderName"
+                                    name="teamName"
                                     className="pixel-input"
-                                    placeholder="ENTER LEADER ALIAS..."
-                                    value={formData.teamLeaderName}
+                                    placeholder="ENTER TEAM NAME..."
+                                    value={formData.teamName}
                                     onChange={handleChange}
                                     required
                                 />
@@ -149,13 +198,26 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                         )}
 
                         <div className="form-group">
+                            <label>{showTeamName ? 'TEAM LEADER NAME' : 'PLAYER NAME'}</label>
+                            <input
+                                type="text"
+                                name="player1Name"
+                                className="pixel-input"
+                                placeholder={showTeamName ? "ENTER LEADER ALIAS..." : "ENTER ALIAS..."}
+                                value={formData.player1Name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
                             <label>COMM-LINK (EMAIL)</label>
                             <input
                                 type="email"
-                                name="playerEmail"
+                                name="email"
                                 className="pixel-input"
                                 placeholder="ENTER EMAIL..."
-                                value={formData.playerEmail}
+                                value={formData.email}
                                 onChange={handleChange}
                                 required
                             />
@@ -165,10 +227,10 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             <label>DIRECT LINE (PHONE)</label>
                             <input
                                 type="tel"
-                                name="playerPhone"
+                                name="phone"
                                 className="pixel-input"
                                 placeholder="ENTER NUMBER..."
-                                value={formData.playerPhone}
+                                value={formData.phone}
                                 onChange={handleChange}
                                 required
                             />
@@ -178,10 +240,10 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             <label>COLLEGE NAME</label>
                             <input
                                 type="text"
-                                name="collegeName"
+                                name="college"
                                 className="pixel-input"
                                 placeholder="ENTER COLLEGE NAME..."
-                                value={formData.collegeName}
+                                value={formData.college}
                                 onChange={handleChange}
                                 required
                             />
@@ -191,16 +253,16 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             <label>COURSE / DEGREE</label>
                             <input
                                 type="text"
-                                name="course"
+                                name="branch"
                                 className="pixel-input"
                                 placeholder="ENTER COURSE..."
-                                value={formData.course}
+                                value={formData.branch}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
 
-                        {isTeamEvent && (
+                        {showSquadSizeSelect && (
                             <div className="form-group">
                                 <label>SQUAD SIZE</label>
                                 <select
@@ -214,7 +276,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             </div>
                         )}
 
-                        {isTeamEvent && parseInt(formData.squadSize) >= 2 && !isReelMaking && (
+                        {parseInt(formData.squadSize) >= 2 && (
                             <div className="form-group">
                                 <label>PLAYER 2 NAME</label>
                                 <input
@@ -229,24 +291,9 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             </div>
                         )}
 
-                        {isTeamEvent && isReelMaking && parseInt(formData.squadSize) >= 2 && (
+                        {parseInt(formData.squadSize) >= 3 && (
                             <div className="form-group">
-                                <label>MEMBER 2 NAME</label>
-                                <input
-                                    type="text"
-                                    name="player2Name"
-                                    className="pixel-input"
-                                    placeholder="ENTER 2ND ALIAS..."
-                                    value={formData.player2Name}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        )}
-
-                        {isTeamEvent && parseInt(formData.squadSize) >= 3 && (
-                            <div className="form-group">
-                                <label>{isReelMaking ? 'MEMBER 3 NAME' : 'PLAYER 3 NAME'}</label>
+                                <label>PLAYER 3 NAME</label>
                                 <input
                                     type="text"
                                     name="player3Name"
@@ -259,7 +306,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             </div>
                         )}
 
-                        {isTeamEvent && parseInt(formData.squadSize) >= 4 && (
+                        {parseInt(formData.squadSize) >= 4 && (
                             <div className="form-group">
                                 <label>PLAYER 4 NAME</label>
                                 <input
@@ -274,14 +321,31 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             </div>
                         )}
 
+                        {parseInt(formData.squadSize) >= 5 && (
+                            <div className="form-group">
+                                <label>PLAYER 5 NAME</label>
+                                <input
+                                    type="text"
+                                    name="player5Name"
+                                    className="pixel-input"
+                                    placeholder="ENTER 5TH ALIAS..."
+                                    value={formData.player5Name}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        )}
+
                         <div className="payment-section">
                             <h3 className="payment-title">PAYMENT VERIFICATION</h3>
                             <div className="qr-container">
-                                <img
-                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=techfest@upi&pn=Tecxell2026&cu=INR"
-                                    alt="Payment QR Code"
-                                    className="qr-code-img"
-                                />
+                                <div className="qr-crop-box">
+                                    <img
+                                        src={dynamicQr || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=techfest@upi&pn=Tecxell2026&cu=INR"}
+                                        alt="Payment QR Code"
+                                        className="qr-code-img"
+                                    />
+                                </div>
                                 <p className="qr-instruction">SCAN TO PAY REGISTRATION FEE</p>
                             </div>
 
