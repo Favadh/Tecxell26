@@ -2,20 +2,20 @@ services:
   backend:
     build: ./Server
     restart: always
-    environment:
-      - MONGO_URI=${MONGO_URI}
-      - PORT=3000
+    env_file: ./Server/.env
+    ports:
+      - "8000:8000"
     networks:
-      - tecxell-network
+      - tecxell-net
 
   frontend:
     build: ./Client
     restart: always
     ports:
-      - "8080:8000"
+      - "9000:80" 
     networks:
-      - tecxell-network
+      - tecxell-net
 
 networks:
-  tecxell-network:
+  tecxell-net:
     driver: bridge
