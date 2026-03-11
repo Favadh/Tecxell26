@@ -34,7 +34,7 @@ export const eventsData = [
         prize: ['1st Prize - ₹2,500', '2nd Prize - ₹1,500'],
         fee: '₹100 Per Person',
         date: '18 MARCH',
-        time: '10:00 AM',
+        time: '12:00 PM',
         venue: 'Vinton Cerf Lab',
         isTeamEvent: true
     },
@@ -51,6 +51,7 @@ export const eventsData = [
         fullDescription: 'Embark on a campus-wide quest to find the ultimate hidden treasure. Your team will navigate three rounds of cryptic clues and challenges. You will need sharp wits, teamwork, and an eye for detail. Race against time and other teams to claim the prize!',
         rules: [
             'Each team must consist of four members.',
+            'A maximum of 10 teams will be allowed to participate.',
             'The treasure hunt competition will consist of three rounds.',
             'Teams must successfully complete each round in order to proceed to the next round.',
             'The use of mobile phones or the internet to search for clues is strictly prohibited, unless permitted by the organisers.',
@@ -64,13 +65,14 @@ export const eventsData = [
         ],
         coordinators: ['Fathima Nazrin - 9645507376'],
         judging: [
-            'The team that successfully completes all three rounds and finds the final treasure first will be declared the winner.'
+            'The team that earns the highest score within the given time limit by successfully completing the three rounds and solving the clues will be declared the winner.'
         ],
         prize: ['1st Prize - ₹4,000'],
         fee: '₹200 Per Team (Team of 4)',
         date: '18 MARCH',
-        time: '02:00 PM',
+        time: '09:30 AM',
         venue: 'Room No: M016',
+        bookedSeats: 10,
         isTeamEvent: true
     },
 
@@ -179,9 +181,9 @@ export const eventsData = [
             'Overall impact'
         ],
         prize: ['1st Prize - ₹2000', '2nd Prize - ₹1000'],
-        fee: '₹200 Per Team',
+        fee: '₹50 Per Team',
         date: '18 MARCH',
-        time: '06:00 PM',
+        time: '09:30 AM',
         venue: 'Room No: M014',
         isTeamEvent: true
     },
@@ -220,7 +222,7 @@ export const eventsData = [
         fee: '₹50 Per Head',
         date: '18 MARCH',
         time: '10:30 AM',
-        venue: 'Room No: M014',
+        venue: 'Room No: M015',
         bookedSeats: 16
     },
     {
@@ -264,7 +266,7 @@ export const eventsData = [
         prize: ['1st Prize - ₹2000', '2nd Prize - ₹1000'],
         fee: '₹50 Per Head',
         date: '18 MARCH',
-        time: '01:00 PM Onwards',
-        venue: 'Room No: M015'
+        time: '09:30 AM',
+        venue: 'Room No: M014'
     }
 ];

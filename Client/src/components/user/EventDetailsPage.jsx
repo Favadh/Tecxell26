@@ -14,6 +14,7 @@ const EventDetailsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [eFootballSeats, setEFootballSeats] = useState(0);
     const [miniMilitiaSeats, setMiniMilitiaSeats] = useState(0);
+    const [treasureHuntSeats, setTreasureHuntSeats] = useState(0);
 
     useEffect(() => {
         if (event?.id === 'e-football') {
@@ -25,6 +26,11 @@ const EventDetailsPage = () => {
             api.get('/miniMilitiaCount')
                 .then(res => setMiniMilitiaSeats(res.data.count))
                 .catch(() => setMiniMilitiaSeats(0));
+        }
+        if (event?.id === 'treasure-hunt') {
+            api.get('/treasureHuntCount')
+                .then(res => setTreasureHuntSeats(res.data.count))
+                .catch(() => setTreasureHuntSeats(0));
         }
     }, [event?.id]);
 
@@ -173,16 +179,31 @@ const EventDetailsPage = () => {
                         </div>
                     )}
 
+                    {event.id === 'treasure-hunt' && (
+                        <div className="progress-box pixel-border card-yellow">
+                            <h4 className="progress-title">TEAM AVAILABILITY</h4>
+                            <div className="progress-stats">
+                                <span className="seats-remaining blink-text text-arcade-yellow">
+                                    {treasureHuntSeats >= 10 ? 'LOBBY FULL' : `${10 - treasureHuntSeats} TEAMS REMAINING`}
+                                </span>
+                                <span className="seats-total">{treasureHuntSeats} / 10 BOOKED</span>
+                            </div>
+                            <div className="progress-bar-container">
+                                <div className="progress-bar-fill" style={{ width: `${(treasureHuntSeats / 10) * 100}%` }}></div>
+                            </div>
+                        </div>
+                    )}
+
                     <button
                         className={`register-btn-large btn-style-${event.color} blink-text-subtle`}
                         onClick={() => setIsModalOpen(true)}
-                        disabled={(event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40)}
+                        disabled={(event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) || (event.id === 'treasure-hunt' && treasureHuntSeats >= 10)}
                         style={{
-                            opacity: (event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) ? 0.5 : 1,
-                            cursor: (event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) ? 'not-allowed' : 'pointer'
+                            opacity: (event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) || (event.id === 'treasure-hunt' && treasureHuntSeats >= 10) ? 0.5 : 1,
+                            cursor: (event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) || (event.id === 'treasure-hunt' && treasureHuntSeats >= 10) ? 'not-allowed' : 'pointer'
                         }}
                     >
-                        {(event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) ? 'LOBBY FULL' : 'INITIATE REGISTRATION'}
+                        {(event.id === 'e-football' && eFootballSeats >= 32) || (event.id === 'mini-militia' && miniMilitiaSeats >= 40) || (event.id === 'treasure-hunt' && treasureHuntSeats >= 10) ? 'LOBBY FULL' : 'INITIATE REGISTRATION'}
                     </button>
                 </div>
             </div>

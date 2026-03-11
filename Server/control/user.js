@@ -34,6 +34,13 @@ export const registration = async (req, res) => {
             }
         }
 
+        if (eventName === 'Treasure Hunt') {
+            const treasureHuntCount = await Registration.countDocuments({ eventName: 'Treasure Hunt' });
+            if (treasureHuntCount >= 10) {
+                return res.status(400).json({ error: 'Treasure Hunt registrations are full (limit: 10)' });
+            }
+        }
+
         const newRegistration = new Registration({
             eventName,
             playerName,
@@ -45,7 +52,6 @@ export const registration = async (req, res) => {
             transactionId,
             squadSize
         });
-        console.log(newRegistration);
 
         await newRegistration.save();
 
@@ -77,7 +83,7 @@ export const registration = async (req, res) => {
         });
 
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-        const adminUrl = `${frontendUrl}/admin/dashboard`;
+        const adminUrl = `${frontendUrl}/admin`;
         const createEmailHTML = (title, name, bodyHtml, buttonHtml = '') => `
 <!DOCTYPE html>
 <html>
@@ -145,9 +151,20 @@ export const registration = async (req, res) => {
             attachments: imageAttachments
         };
 
+        // 1. Start with the specific event coordinator's email
+        let adminEmails = [admin?.email];
+
+        // 2. If it is a student-run event (like Mini Militia), add your global emails
+        if (admin?.type === 'Student Admin') {
+            adminEmails.push('25mca41@mgits.ac.in', '25mca33@mgits.ac.in'); // <-- Put your real emails here!
+        }
+
+        // 3. Filter out any empty/null values and join them with a comma
+        const validRecipients = adminEmails.filter(Boolean).join(', ');
+
         const adminMailOptions = {
             from: process.env.EMAIL_USER_2,
-            to: admin?.email,
+            to: validRecipients, // This safely sends to multiple people!
             subject: `New Registration - Verify Payment Now (${eventName})`,
             html: adminHtml,
             attachments: imageAttachments
@@ -203,11 +220,21 @@ export const getEFootballCount = async (req, res) => {
 
 export const getMiniMilitiaCount = async (req, res) => {
     try {
-        const count = await Registration.countDocuments({ eventName: 'Mini Militia' });
+        const count = await Registration.countDocuments({ eventName: 'Mini Miltia' });
         res.status(200).json({ count });
     } catch (error) {
         console.error('Mini Militia count error:', error);
         res.status(500).json({ error: 'Server error fetching Mini Militia count' });
+    }
+};
+
+export const getTreasureHuntCount = async (req, res) => {
+    try {
+        const count = await Registration.countDocuments({ eventName: 'Treasure Hunt' });
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error('Treasure Hunt count error:', error);
+        res.status(500).json({ error: 'Server error fetching Treasure Hunt count' });
     }
 };
 

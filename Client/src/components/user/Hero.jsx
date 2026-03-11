@@ -10,13 +10,14 @@ const Hero = () => {
                     <h1 className="hero-main-title pixel-text-shadow">TECXELL '26</h1>
 
                     <p className="techfest-date blink-text mt-4">
-                        MAR 18 • 2026 
+                        MAR 18 • 2026
                     </p>
 
                     <Countdown targetDate="2026-03-18T00:00:00" />
 
-                    <div className="cta-wrapper mt-5">
+                    <div className="cta-wrapper mt-5" style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <a href="#events" className="pixel-btn btn-style-red pixel-text-shadow">START ADVENTURE</a>
+                        <a href="/brochure.pdf" download className="pixel-btn btn-style-blue pixel-text-shadow">BROCHURE</a>
                     </div>
                 </div>
             </div>

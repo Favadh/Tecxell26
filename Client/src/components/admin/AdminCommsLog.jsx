@@ -72,7 +72,7 @@ const AdminCommsLog = () => {
             return;
         }
 
-        const headers = ["Sl No", "Ticket ID", "Event Name", "Player Names", "Team Name", "Phone", "Email", "College", "Branch", "Transaction ID", "Squad Size", "Fee Status", "Verified Status", "Date Registered"];
+        const headers = ["Sl No", "Ticket ID", "Event Name", "Player Names", "Team Name", "Phone", "Email", "College", "Branch", "Transaction ID", "Squad Size", "Fee Status", "Verified Status", "Prize", "Date Registered"];
 
         const csvRows = [headers.join(',')];
 
@@ -91,6 +91,7 @@ const AdminCommsLog = () => {
                 reg.squadSize || (Array.isArray(reg.playerName) ? reg.playerName.length : 1),
                 `"${reg.feeSts || ''}"`,
                 `"${reg.verified || ''}"`,
+                `"${reg.prize || 'None'}"`,
                 `"${new Date(reg.createdAt).toLocaleString()}"`
             ];
             csvRows.push(row.join(','));
