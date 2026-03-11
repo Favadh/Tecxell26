@@ -16,7 +16,7 @@ jobs:
       - name: Deploy with Docker Compose
         run: |
           # Rebuild the images with the latest code and start in detached mode
-          sudo docker compose up --build -d
+          docker compose up --build -d
           
           # Clean up old unused Docker images to save disk space on the server
-          sudo docker image prune -f
+          docker image prune -f
