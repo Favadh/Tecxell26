@@ -1,0 +1,22 @@
+name: Deploy Tecxell26 to Production
+
+on:
+  push:
+    branches:
+      - main # Change this to 'master' if your default branch is master
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted 
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy with Docker Compose
+        run: |
+          # Rebuild the images with the latest code and start in detached mode
+          sudo docker compose up --build -d
+          
+          # Clean up old unused Docker images to save disk space on the server
+          sudo docker image prune -f
