@@ -98,9 +98,9 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
             return;
         }
 
-        // College validation (No MITS variations)
-        if (/mits|muthoot/i.test(collegeLower)) {
-            setErrorMsg('ACCESS DENIED: Participants from MITS are not permitted.');
+        // College validation (No MITS variations unless MCA)
+        if (/mits|muthoot/i.test(collegeLower) && !/mca/i.test(courseLower)) {
+            setErrorMsg('ACCESS DENIED: Participants from MITS are not permitted (except MCA).');
             return;
         }
 
