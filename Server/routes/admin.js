@@ -10,7 +10,7 @@ adminRouter.get('/registrationData', auth, getRegistrations);
 
 adminRouter.put('/registrationVerify/:id', auth, verifyPayment);
 
-adminRouter.delete('/registrationNotVerify/:id', auth, NotVerifyPayment);
+adminRouter.put('/registrationReject/:id', auth, NotVerifyPayment);
 
 adminRouter.get('/eventsStatus', auth, getEventsStatus);
 

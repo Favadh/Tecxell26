@@ -43,7 +43,9 @@ const AdminCommsLog = () => {
         if (filterVerify === 'VERIFIED') {
             filtered = filtered.filter(r => r.verified === 'Verified');
         } else if (filterVerify === 'PENDING') {
-            filtered = filtered.filter(r => r.verified !== 'Verified');
+            filtered = filtered.filter(r => r.verified === 'Pending');
+        } else if (filterVerify === 'REJECTED') {
+            filtered = filtered.filter(r => r.verified === 'Rejected');
         }
 
         if (searchQuery) {
@@ -120,8 +122,8 @@ const AdminCommsLog = () => {
                 await api.put(`/registrationVerify/${id}`);
                 setRegistrations(prev => prev.map(r => r._id === id ? { ...r, verified: 'Verified', feeSts: 'Paid' } : r));
             } else if (actionType === 'NOT_VERIFY') {
-                await api.delete(`/registrationNotVerify/${id}`);
-                setRegistrations(prev => prev.filter(r => r._id !== id));
+                await api.put(`/registrationReject/${id}`);
+                setRegistrations(prev => prev.map(r => r._id === id ? { ...r, verified: 'Rejected', feeSts: 'Pending' } : r));
             }
             setSelectedReg(null); // Close the detail modal
             setVerificationAction(null); // Close the confirmation modal
@@ -181,6 +183,7 @@ const AdminCommsLog = () => {
                         <option value="ALL">VERIFICATION</option>
                         <option value="VERIFIED">VERIFIED</option>
                         <option value="PENDING">PENDING</option>
+                        <option value="REJECTED">REJECTED</option>
                     </select>
                     <button
                         className="pixel-btn blink-text-subtle export-btn"
@@ -214,7 +217,7 @@ const AdminCommsLog = () => {
                                     <td className={reg.feeSts === 'Paid' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
                                         {reg.feeSts}
                                     </td>
-                                    <td className={reg.verified === 'Verified' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
+                                    <td className={reg.verified === 'Verified' ? 'text-arcade-green' : reg.verified === 'Rejected' ? 'text-arcade-red' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
                                         {reg.verified}
                                     </td>
                                     <td style={{ textAlign: 'center' }}>

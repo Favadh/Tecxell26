@@ -132,7 +132,8 @@ export const registration = async (req, res) => {
         const adminHtml = createEmailHTML(
             'New Registration Alert',
             admin?.name || 'Coordinator',
-            `<p>A new registration has been submitted for <strong>${eventName}</strong>.</p>
+            `<p>A new registration has been submitted for <strong>${eventName}</strong> by <strong>${Array.isArray(playerName) ? playerName[0] : playerName}</strong>.</p>
+             <p><strong>Transaction ID:</strong> ${transactionId}</p>
              <p>Please verify the payment and approve it immediately. Do not delay this verification.</p>`,
             `<div style="text-align: center;"><a href="${adminUrl}" class="btn" style="display: inline-block; padding: 12px 28px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 25px;">Go to Admin Dashboard</a></div>`
         );
@@ -183,8 +184,6 @@ export const registration = async (req, res) => {
         res.status(500).json({ error: 'Server error during registration' });
     }
 };
-
-
 
 // details of a single registration for the ticket page, also includes event details for the frontend to display on the ticket page
 export const getRegistration = async (req, res) => {

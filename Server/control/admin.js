@@ -187,11 +187,13 @@ export const NotVerifyPayment = async (req, res) => {
         const { id } = req.params;
 
         // Find and update the registration status
-        const deletedRegistration = await Registration.findByIdAndDelete(
-            id
+        const rejectedRegistration = await Registration.findByIdAndUpdate(
+            id,
+            { verified: 'Rejected', feeSts: 'Pending' },
+            { new: true }
         );
 
-        if (!deletedRegistration) {
+        if (!rejectedRegistration) {
             return res.status(404).json({ error: 'Registration not found' });
         }
 
@@ -243,10 +245,11 @@ export const NotVerifyPayment = async (req, res) => {
 `;
 
         const userHtml = createEmailHTML(
-            `Payment Verification Failed - ${deletedRegistration.eventName}`,
-            deletedRegistration.playerName,
+            `Payment Verification Failed - ${rejectedRegistration.eventName}`,
+            rejectedRegistration.playerName,
             `<p>We regret to inform you that your payment could not be verified due to a transaction ID mismatch with our records.</p>
-             <p>As a result, your registration for <strong>${deletedRegistration.eventName}</strong> has been cancelled.</p>
+             <p>As a result, your registration for <strong>${rejectedRegistration.eventName}</strong> has been cancelled.</p>
+             <p>If you already paid and you think this is a mistake, then contact the coordinator immediatly.</p>
              <p>Please ensure you provide the correct transaction ID when registering again.</p>`
         );
 
@@ -258,8 +261,8 @@ export const NotVerifyPayment = async (req, res) => {
 
         const userMailOptions = {
             from: process.env.EMAIL_USER_1,
-            to: deletedRegistration.email,
-            subject: `Payment Verification Failed for ${deletedRegistration.eventName} - Registration Cancelled`,
+            to: rejectedRegistration.email,
+            subject: `Payment Verification Failed for ${rejectedRegistration.eventName} - Registration Cancelled`,
             html: userHtml,
             attachments: imageAttachments
         };
