@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../utils/axios';
 import AdminCommsLog from './AdminCommsLog';
 import AdminMissionControl from './AdminMissionControl';
 import AdminWinners from './AdminWinners';
@@ -8,6 +9,20 @@ import './AdminDashboard.css';
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('data'); // 'data' or 'timer'
+    const [adminName, setAdminName] = useState('LOADING...');
+
+    useEffect(() => {
+        const fetchAdminProfile = async () => {
+            try {
+                const response = await api.get('/adminProfile');
+                setAdminName(response.data.name || 'ADMIN');
+            } catch (err) {
+                console.error('Error fetching admin profile:', err);
+                setAdminName('ADMIN');
+            }
+        };
+        fetchAdminProfile();
+    }, []);
 
     const handleLogout = () => {
         console.log('User logging out...');
@@ -20,7 +35,7 @@ const AdminDashboard = () => {
         <div className="admin-dashboard-page">
             <div className="admin-sidebar pixel-border border-blue">
                 <div className="admin-profile">
-                    <h2 className="pixel-text-shadow-blue">SYS_ADMIN</h2>
+                    <h2 className="pixel-text-shadow-blue">{adminName.toUpperCase()}</h2>
                     <p className="online-status blink-text">● ONLINE</p>
                 </div>
 

@@ -22,6 +22,9 @@ const eventSchema = new mongoose.Schema({
     schedule:{
       type: String,
        required:true
+    },
+    completedAt: {
+      type: Date
     }
 });
 

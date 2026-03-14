@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, adminRegistration, eventRegistration, getEventsStatus, getRegistrations, NotVerifyPayment, verifyPayment, updateEventStatus, updatePrize } from '../control/admin.js';
+import { adminLogin, adminRegistration, eventRegistration, getEventsStatus, getRegistrations, NotVerifyPayment, verifyPayment, updateEventStatus, updatePrize, getAdminProfile } from '../control/admin.js';
 import auth from '../middleware/auth.js';
 
 const adminRouter = express.Router();
@@ -7,6 +7,7 @@ const adminRouter = express.Router();
 adminRouter.post('/adminLogin', adminLogin);
 
 adminRouter.get('/registrationData', auth, getRegistrations);
+adminRouter.get('/adminProfile', auth, getAdminProfile);
 
 adminRouter.put('/registrationVerify/:id', auth, verifyPayment);
 

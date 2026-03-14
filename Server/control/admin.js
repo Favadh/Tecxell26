@@ -82,6 +82,20 @@ export const getRegistrations = async (req, res) => {
     }
 };
 
+export const getAdminProfile = async (req, res) => {
+    try {
+        const adminId = req.user.id;
+        const admin = await Admin.findById(adminId).select('name');
+        if (!admin) {
+            return res.status(404).json({ error: 'Admin not found' });
+        }
+        res.json({ name: admin.name });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 export const verifyPayment = async (req, res) => {
     try {
         const { id } = req.params;
@@ -296,9 +310,16 @@ export const updateEventStatus = async (req, res) => {
         const { id } = req.params;
         const { currentSts } = req.body;
 
+        const updateData = { currentSts };
+        if (currentSts === 'Completed') {
+            updateData.completedAt = new Date();
+        } else {
+            updateData.$unset = { completedAt: 1 };
+        }
+
         const updatedEvent = await Event.findByIdAndUpdate(
             id,
-            { currentSts },
+            updateData,
             { new: true } // Returns the updated document
         );
 

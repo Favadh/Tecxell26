@@ -40,6 +40,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [isTxnFocused, setIsTxnFocused] = useState(false);
 
     const event = eventsData.find(e => e.id === eventId);
     // Use dynamic string path from eventsData.js directly
@@ -349,7 +350,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                                 <p className="qr-instruction">SCAN TO PAY REGISTRATION FEE</p>
                             </div>
 
-                            <div className="form-group">
+                            <div className="form-group" style={{ position: 'relative' }}>
                                 <label>TRANSACTION ID</label>
                                 <input
                                     type="text"
@@ -358,8 +359,41 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                                     placeholder="ENTER TXN REF NO..."
                                     value={formData.transactionId}
                                     onChange={handleChange}
+                                    onFocus={() => setIsTxnFocused(true)}
+                                    onBlur={() => setIsTxnFocused(false)}
+                                    title="Ensure to enter the id correctly"
+                                    style={{ transition: 'all 0.3s ease' }}
                                     required
                                 />
+                                {isTxnFocused && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '-40px',
+                                        right: '0',
+                                        backgroundColor: 'var(--arcade-yellow)',
+                                        color: '#000',
+                                        padding: '8px 12px',
+                                        fontSize: '0.8rem',
+                                        borderRadius: '4px',
+                                        fontWeight: 'bold',
+                                        zIndex: 10,
+                                        boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                                        pointerEvents: 'none',
+                                        animation: 'fadeIn 0.2s ease-out'
+                                    }}>
+                                        Ensure to enter the id correctly
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '-6px',
+                                            right: '15px',
+                                            width: '0',
+                                            height: '0',
+                                            borderLeft: '6px solid transparent',
+                                            borderRight: '6px solid transparent',
+                                            borderTop: '6px solid var(--arcade-yellow)',
+                                        }}></div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

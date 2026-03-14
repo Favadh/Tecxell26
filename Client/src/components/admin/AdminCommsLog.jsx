@@ -16,6 +16,10 @@ const AdminCommsLog = () => {
     const [selectedReg, setSelectedReg] = useState(null);
     const [verificationAction, setVerificationAction] = useState(null); // stores { id, actionType } pending confirmation
     const [isProcessing, setIsProcessing] = useState(false);
+    
+    // New states for Transaction ID verification flow
+    const [adminTxnInput, setAdminTxnInput] = useState('');
+    const [verificationStep, setVerificationStep] = useState('INPUT'); // 'INPUT', 'SUCCESS', 'FAILED'
 
     useEffect(() => {
         const fetchRegistrations = async () => {
@@ -61,12 +65,33 @@ const AdminCommsLog = () => {
         return filtered;
     }, [registrations, searchQuery, filterVerify]);
 
-    const handleVerifyAction = (id) => {
+    const handleVerifyActionClick = (id) => {
         setVerificationAction({ id, actionType: 'VERIFY' });
+        setVerificationStep('INPUT');
+        setAdminTxnInput('');
     };
 
-    const handleNotVerifyAction = (id) => {
-        setVerificationAction({ id, actionType: 'NOT_VERIFY' });
+    const handleCheckTransaction = async () => {
+        if (!verificationAction || !selectedReg) return;
+        
+        if (!adminTxnInput.trim()) {
+            alert('Please enter a Transaction ID to check.');
+            return;
+        }
+        
+        // Match user's transactionId with admin's input
+        if (adminTxnInput.trim() === selectedReg.transactionId.trim()) {
+            setVerificationStep('SUCCESS');
+            // Auto-trigger Verification API
+            await confirmVerificationAction('VERIFY');
+        } else {
+            setVerificationStep('FAILED');
+        }
+    };
+
+    const handleRejectRegistration = async () => {
+        setVerificationStep('REJECT_SUCCESS');
+        await confirmVerificationAction('NOT_VERIFY');
     };
 
     const exportToCSV = () => {
@@ -125,25 +150,34 @@ const AdminCommsLog = () => {
         document.body.removeChild(link);
     };
 
-    const confirmVerification = async () => {
+    const confirmVerificationAction = async (actionTypeToExecute) => {
         if (!verificationAction) return;
 
         setIsProcessing(true);
-        const { id, actionType } = verificationAction;
+        const { id } = verificationAction;
         try {
-            if (actionType === 'VERIFY') {
+            if (actionTypeToExecute === 'VERIFY') {
                 await api.put(`/registrationVerify/${id}`);
                 setRegistrations(prev => prev.map(r => r._id === id ? { ...r, verified: 'Verified', feeSts: 'Paid' } : r));
-            } else if (actionType === 'NOT_VERIFY') {
+            } else if (actionTypeToExecute === 'NOT_VERIFY') {
                 await api.put(`/registrationReject/${id}`);
                 setRegistrations(prev => prev.map(r => r._id === id ? { ...r, verified: 'Rejected', feeSts: 'Pending' } : r));
             }
-            setSelectedReg(null); // Close the detail modal
-            setVerificationAction(null); // Close the confirmation modal
+            
+            // Auto close after 2 seconds
+            setTimeout(() => {
+                setSelectedReg(null); // Close the detail modal
+                setVerificationAction(null); // Close the confirmation modal
+                setVerificationStep('INPUT');
+                setAdminTxnInput('');
+            }, 2000);
+            
         } catch (err) {
             console.error('Error performing verification action:', err);
             alert('Failed to execute action');
             setVerificationAction(null);
+            setVerificationStep('INPUT');
+            setAdminTxnInput('');
         } finally {
             setIsProcessing(false);
         }
@@ -152,6 +186,8 @@ const AdminCommsLog = () => {
     const cancelVerification = () => {
         if (isProcessing) return;
         setVerificationAction(null);
+        setVerificationStep('INPUT');
+        setAdminTxnInput('');
     };
 
     if (loading) {
@@ -213,7 +249,8 @@ const AdminCommsLog = () => {
                         <tr>
                             <th style={{ width: '5%' }}>NO</th>
                             <th style={{ width: '25%' }}>STAGE LOG</th>
-                            <th style={{ width: '30%' }}>OPERATOR</th>
+                            <th style={{ width: '20%' }}>OPERATOR</th>
+                            <th style={{ width: '10%', textAlign: 'center' }}>ID</th>
                             <th style={{ whiteSpace: 'nowrap', width: '15%', textAlign: 'center' }}>PAYMENT STATUS</th>
                             <th style={{ whiteSpace: 'nowrap', width: '15%', textAlign: 'center' }}>VERIFIED</th>
                             <th style={{ whiteSpace: 'nowrap', width: '10%', textAlign: 'center' }}>ACTION</th>
@@ -227,6 +264,9 @@ const AdminCommsLog = () => {
                                     <td>#{idx + 1}</td>
                                     <td className="text-arcade-pink">{reg.eventName}</td>
                                     <td>{Array.isArray(reg.playerName) ? reg.playerName[0] : reg.playerName}</td>
+                                    <td style={{ textAlign: 'center', fontFamily: 'monospace', fontWeight: 'bold' }}>
+                                        {reg._id ? reg._id.slice(-4).toUpperCase() : 'N/A'}
+                                    </td>
                                     <td className={reg.feeSts === 'Paid' ? 'text-arcade-green' : 'text-arcade-yellow'} style={{ textAlign: 'center' }}>
                                         {reg.feeSts}
                                     </td>
@@ -303,16 +343,9 @@ const AdminCommsLog = () => {
                         {['Superior Admin', 'Student Admin'].includes(adminType) && (
                             <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '1rem' }}>
                                 <button
-                                    className="pixel-btn btn-style-red"
-                                    style={{ padding: '10px 20px', fontSize: '0.8rem' }}
-                                    onClick={() => handleNotVerifyAction(selectedReg._id)}
-                                >
-                                    DON'T VERIFY
-                                </button>
-                                <button
                                     className="pixel-btn btn-style-green"
-                                    style={{ padding: '10px 20px', fontSize: '0.8rem' }}
-                                    onClick={() => handleVerifyAction(selectedReg._id)}
+                                    style={{ padding: '10px 40px', fontSize: '1rem', fontWeight: 'bold' }}
+                                    onClick={() => handleVerifyActionClick(selectedReg._id)}
                                 >
                                     VERIFY
                                 </button>
@@ -322,39 +355,112 @@ const AdminCommsLog = () => {
                 </div>
             )}
 
-            {/* Confirmation Modal */}
+            {/* Confirmation Transaction Check Modal */}
             {verificationAction && (
                 <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
-                    <div className="modal-content pixel-border" style={{ backgroundColor: '#111', padding: '30px', maxWidth: '400px', width: '90%', textAlign: 'center' }}>
-                        <h3 className="text-arcade-yellow mb-4" style={{ fontSize: '1.5rem', marginBottom: '20px' }}>SYSTEM PROMPT</h3>
-                        <p style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '30px', lineHeight: '1.5' }}>
-                            Are you sure you want to mark this registration as
-                            <strong className={verificationAction.actionType === 'VERIFY' ? 'text-arcade-green' : 'text-arcade-red'} style={{ margin: '0 5px' }}>
-                                {verificationAction.actionType === 'VERIFY' ? 'VERIFIED' : 'PENDING'}
-                            </strong>?
-                        </p>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
-                            <button
-                                className="pixel-btn"
-                                style={{ background: '#333', color: '#fff', border: '2px solid #666', padding: '10px 20px', fontSize: '0.9rem', cursor: isProcessing ? 'not-allowed' : 'pointer', opacity: isProcessing ? 0.5 : 1 }}
-                                onClick={cancelVerification}
-                                disabled={isProcessing}
-                            >
-                                CANCEL
-                            </button>
-                            <button
-                                className={`pixel-btn ${!isProcessing ? 'blink-text-subtle' : ''}`}
-                                style={{ background: verificationAction.actionType === 'VERIFY' ? 'var(--arcade-green)' : 'var(--arcade-red)', color: '#000', border: '2px solid #fff', padding: '10px 20px', fontSize: '0.9rem', cursor: isProcessing ? 'progress' : 'pointer', fontWeight: 'bold' }}
-                                onClick={confirmVerification}
-                                disabled={isProcessing}
-                            >
-                                {isProcessing ? (
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="modal-content pixel-border" style={{ position: 'relative', backgroundColor: '#111', padding: '30px', maxWidth: '400px', width: '90%', textAlign: 'center' }}>
+                        
+                        {/* Always show a close button in top right in case admin gets stuck */}
+                        <button
+                            className="pixel-btn-text text-arcade-pink"
+                            style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', fontSize: '1rem', cursor: 'pointer', zIndex: 10 }}
+                            onClick={cancelVerification}
+                        >
+                            [X]
+                        </button>
+                        
+                        {verificationStep === 'INPUT' && (
+                            <>
+                                <h3 className="text-arcade-yellow mb-4" style={{ fontSize: '1.5rem', marginBottom: '20px' }}>SYSTEM PROMPT</h3>
+                                <p style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '20px', lineHeight: '1.5' }}>
+                                    Please enter the Transaction ID exactly as shown in your UPI app:
+                                </p>
+                                <input
+                                    type="text"
+                                    className="pixel-input"
+                                    style={{ width: '100%', marginBottom: '20px', textAlign: 'center', letterSpacing: '1px' }}
+                                    placeholder="Enter Transaction ID"
+                                    value={adminTxnInput}
+                                    onChange={(e) => setAdminTxnInput(e.target.value)}
+                                    autoFocus
+                                />
+                                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                                    <button
+                                        className="pixel-btn"
+                                        style={{ background: '#333', color: '#fff', border: '2px solid #666', padding: '10px 20px', fontSize: '0.9rem', cursor: 'pointer' }}
+                                        onClick={cancelVerification}
+                                    >
+                                        CANCEL
+                                    </button>
+                                    <button
+                                        className="pixel-btn blink-text-subtle"
+                                        style={{ background: 'var(--arcade-blue)', color: '#000', border: '2px solid #fff', padding: '10px 20px', fontSize: '0.9rem', cursor: 'pointer', fontWeight: 'bold' }}
+                                        onClick={handleCheckTransaction}
+                                    >
+                                        CHECK
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                        
+                        {verificationStep === 'SUCCESS' && (
+                            <>
+                                <h3 className="text-arcade-green mb-4" style={{ fontSize: '1.5rem', marginBottom: '20px' }}>MATCH CONFIRMED</h3>
+                                <p style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '30px', lineHeight: '1.5' }}>
+                                    It matches the user's input. Verifying the payment now...
+                                </p>
+                                {isProcessing && (
+                                    <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', color: 'var(--arcade-green)' }}>
                                         PROCESSING <span className="blink-text">...</span>
                                     </span>
-                                ) : 'CONFIRM'}
-                            </button>
-                        </div>
+                                )}
+                            </>
+                        )}
+                        
+                        {verificationStep === 'FAILED' && (
+                            <>
+                                <h3 className="text-arcade-red mb-4" style={{ fontSize: '1.5rem', marginBottom: '20px' }}>MATCH FAILED</h3>
+                                <p style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '30px', lineHeight: '1.5' }}>
+                                    The transaction ID does not match the user's input. Make sure you entered it correctly from your UPI app and there are no mistakes. If this is truly invalid, please reject this registration.
+                                </p>
+                                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                                    <button
+                                        className="pixel-btn"
+                                        style={{ background: '#333', color: '#fff', border: '2px solid #666', padding: '10px 20px', fontSize: '0.9rem', cursor: 'pointer' }}
+                                        onClick={() => {
+                                            setVerificationStep('INPUT');
+                                            setAdminTxnInput('');
+                                        }}
+                                        disabled={isProcessing}
+                                    >
+                                        CANCEL
+                                    </button>
+                                    <button
+                                        className="pixel-btn blink-text-subtle"
+                                        style={{ background: 'var(--arcade-red)', color: '#fff', border: '2px solid #fff', padding: '10px 20px', fontSize: '0.9rem', cursor: isProcessing ? 'progress' : 'pointer', fontWeight: 'bold' }}
+                                        onClick={handleRejectRegistration}
+                                        disabled={isProcessing}
+                                    >
+                                        REJECT
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {verificationStep === 'REJECT_SUCCESS' && (
+                            <>
+                                <h3 className="text-arcade-yellow mb-4" style={{ fontSize: '1.5rem', marginBottom: '20px' }}>REJECTING</h3>
+                                <p style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '30px', lineHeight: '1.5' }}>
+                                    Rejecting this registration and moving it to pending payment standing...
+                                </p>
+                                {isProcessing && (
+                                    <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', color: 'var(--arcade-red)' }}>
+                                        PROCESSING <span className="blink-text">...</span>
+                                    </span>
+                                )}
+                            </>
+                        )}
+                        
                     </div>
                 </div>
             )}
