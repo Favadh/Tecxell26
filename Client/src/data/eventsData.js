@@ -213,6 +213,7 @@ export const eventsData = [
             'No restrictions on cards (all player cards are allowed)',
             'Smart assist allowed',
             'Seat limit of 32 (First come-First served)',
+            'If no.of participants are odd, one participant will be randomly tossed to the next round',
             'Should be played with your own mobile network',
             'If any ongoing match get terminated due to network error re-match will be conducted',
             'Any type of misconduct will lead to disqualification',
