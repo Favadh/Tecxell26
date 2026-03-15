@@ -351,7 +351,7 @@ const RegistrationModal = ({ eventId, eventTitle, eventColor, isTeamEvent, onClo
                             </div>
 
                             <div className="form-group" style={{ position: 'relative' }}>
-                                <label>TRANSACTION ID</label>
+                                <label>UPI TRANSACTION ID</label>
                                 <input
                                     type="text"
                                     name="transactionId"
