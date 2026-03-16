@@ -185,7 +185,7 @@ export const eventsData = [
             'Overall impact'
         ],
         prize: ['1st Prize - Rs 2000', '2nd Prize - Rs 1000'],
-        fee: 'Rs 50 Per Team',
+        fee: 'Rs 50 Per Head',
         date: '18 MARCH',
         time: '09:30 AM',
         venue: 'Room No: M014',
