@@ -17,8 +17,8 @@ const UrgencyMessage = () => {
     };
 
     const OFFSETS = {
-        efootball: 20,
-        minimilitia: 26,
+        efootball: 14,
+        minimilitia: 20,
         treasurehunt: 5
     };
 

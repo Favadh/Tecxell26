@@ -173,12 +173,12 @@ const EventDetailsPage = () => {
                             <h4 className="progress-title">SEAT AVAILABILITY</h4>
                             <div className="progress-stats">
                                 <span className="seats-remaining blink-text text-arcade-yellow">
-                                    {(eFootballSeats + 20) >= 32 ? 'LOBBY FULL' : `${32 - (eFootballSeats + 20)} SEATS REMAINING`}
+                                    {(eFootballSeats + 14) >= 32 ? 'LOBBY FULL' : `${32 - (eFootballSeats + 14)} SEATS REMAINING`}
                                 </span>
-                                <span className="seats-total">{eFootballSeats + 20} / 32 BOOKED</span>
+                                <span className="seats-total">{eFootballSeats + 14} / 32 BOOKED</span>
                             </div>
                             <div className="progress-bar-container">
-                                <div className="progress-bar-fill" style={{ width: `${Math.min(100, ((eFootballSeats + 20) / 32) * 100)}%` }}></div>
+                                <div className="progress-bar-fill" style={{ width: `${Math.min(100, ((eFootballSeats + 14) / 32) * 100)}%` }}></div>
                             </div>
                         </div>
                     )}
@@ -188,12 +188,12 @@ const EventDetailsPage = () => {
                             <h4 className="progress-title">SEAT AVAILABILITY</h4>
                             <div className="progress-stats">
                                 <span className="seats-remaining blink-text text-arcade-pink">
-                                    {(miniMilitiaSeats + 26) >= 40 ? 'LOBBY FULL' : `${40 - (miniMilitiaSeats + 26)} SEATS REMAINING`}
+                                    {(miniMilitiaSeats + 20) >= 40 ? 'LOBBY FULL' : `${40 - (miniMilitiaSeats + 20)} SEATS REMAINING`}
                                 </span>
-                                <span className="seats-total">{miniMilitiaSeats + 26} / 40 BOOKED</span>
+                                <span className="seats-total">{miniMilitiaSeats + 20} / 40 BOOKED</span>
                             </div>
                             <div className="progress-bar-container">
-                                <div className="progress-bar-fill" style={{ width: `${Math.min(100, ((miniMilitiaSeats + 26) / 40) * 100)}%` }}></div>
+                                <div className="progress-bar-fill" style={{ width: `${Math.min(100, ((miniMilitiaSeats + 20) / 40) * 100)}%` }}></div>
                             </div>
                         </div>
                     )}
@@ -216,13 +216,13 @@ const EventDetailsPage = () => {
                     <button
                         className={`register-btn-large btn-style-${event.color} blink-text-subtle`}
                         onClick={() => setIsModalOpen(true)}
-                        disabled={(event.id === 'e-football' && (eFootballSeats + 20) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 26) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10)}
+                        disabled={(event.id === 'e-football' && (eFootballSeats + 14) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 20) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10)}
                         style={{
-                            opacity: (event.id === 'e-football' && (eFootballSeats + 20) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 26) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 0.5 : 1,
-                            cursor: (event.id === 'e-football' && (eFootballSeats + 20) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 26) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 'not-allowed' : 'pointer'
+                            opacity: (event.id === 'e-football' && (eFootballSeats + 14) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 20) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 0.5 : 1,
+                            cursor: (event.id === 'e-football' && (eFootballSeats + 14) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 20) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 'not-allowed' : 'pointer'
                         }}
                     >
-                        {(event.id === 'e-football' && (eFootballSeats + 20) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 26) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 'LOBBY FULL' : 'INITIATE REGISTRATION'}
+                        {(event.id === 'e-football' && (eFootballSeats + 14) >= 32) || (event.id === 'mini-militia' && (miniMilitiaSeats + 20) >= 40) || (event.id === 'treasure-hunt' && (treasureHuntSeats + 5) >= 10) ? 'LOBBY FULL' : 'INITIATE REGISTRATION'}
                     </button>
                 </div>
             </div>
