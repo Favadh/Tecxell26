@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { eventsData } from '../../data/eventsData';
 import RegistrationModal from './RegistrationModal';
-import UrgencyMessage from './UrgencyMessage';
 import api from '../../utils/axios';
 import './Events.css';
 import './EventDetailsPage.css';
@@ -35,7 +34,6 @@ const EventDetailsPage = () => {
 
     return (
         <div className="event-details-page container">
-            <UrgencyMessage eventId={event.id} />
             <Link to="/" className="back-link">
                 &lt; BACK TO STAGES
             </Link>

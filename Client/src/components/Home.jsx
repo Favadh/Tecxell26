@@ -4,7 +4,6 @@ import Hero from './user/Hero';
 import About from './user/About';
 import Events from './user/Events';
 import Footer from './user/Footer';
-import UrgencyMessage from './user/UrgencyMessage';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
 
 const Home = () => {
@@ -48,7 +47,6 @@ const Home = () => {
 
     return (
         <div style={{ position: 'relative' }}>
-            <UrgencyMessage />
             <Header />
             <Hero />
             <About />
