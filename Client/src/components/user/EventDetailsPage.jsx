@@ -172,15 +172,14 @@ const EventDetailsPage = () => {
                     )}
 
                     <button
-                        className={`register-btn-large btn-style-${event.color} blink-text-subtle`}
-                        onClick={() => setIsModalOpen(true)}
-                        disabled={event.maxSeats && regCount >= event.maxSeats}
+                        className={`register-btn-large btn-style-${event.color}`}
+                        disabled={true}
                         style={{
-                            opacity: (event.maxSeats && regCount >= event.maxSeats) ? 0.5 : 1,
-                            cursor: (event.maxSeats && regCount >= event.maxSeats) ? 'not-allowed' : 'pointer'
+                            opacity: 0.5,
+                            cursor: 'not-allowed'
                         }}
                     >
-                        {event.maxSeats && regCount >= event.maxSeats ? 'LOBBY FULL' : 'INITIATE REGISTRATION'}
+                        REGISTRATIONS CLOSED
                     </button>
                 </div>
             </div>
