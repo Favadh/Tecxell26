@@ -23,7 +23,11 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          # The --build flag ensures the React app is re-compiled with the injected .env variables
-          docker compose up --build -d
+          # Build sequentially to prevent the self-hosted runner from running out of memory
+          docker compose build backend
+          docker compose build frontend
+          
+          # Start the services
+          docker compose up -d
           
           docker image prune -f
